@@ -1,0 +1,179 @@
+<html>
+    <head>
+        <title>Spotify Library Blind Test</title>
+        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="spotify-blind-test.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    
+    <body>
+        <!-- Login page -->
+        <div id="login" style="display: none;" class="page page-hidden">
+            <div class="container">
+                <div class="page-header" style="text-align: center; margin-top: 0px;">
+                    <h1 style="margin-top: 0px;">Spotify Library Blind Test</h1>
+                    <h3>How well do you know your own tracks ?</h3>
+                </div>
+            
+                <div class="page-header" style="margin-top: 20px;">
+                    <p>This game uses the tracks of your Spotify's account library. Listen to randomly picked ones and try to guess their name. The bigger your library is, the funnier it gets !</p>
+                    
+                    <p>The login process is secure (we never see your credentials), and we don't store any personnal informations about your account. Just login and play !</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <a href="#" class="btn btn-success btn-login" onclick="javascript:openLogin()"><i class="fa fa-spotify" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<span class="btn-login-text">Login to Spotify (free or premium)</span></a>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="#" data-toggle="modal" data-target="#aboutModal" class="btn btn-info"><i class="fa fa-question" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;About</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading page -->
+        <div id="loading" style="display: none;" class="page page-hidden">
+            <div class="container">
+                <div class="page-header" style="text-align: center; margin-top: 0px;">
+                    <h1 style="margin-top: 0px;">Spotify Library Blind Test</h1>
+                </div>
+            
+                <div class="text-center">
+                    <h3>Loading your tracks...</h3>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success progress-bar-striped active" id="loadingBar" role="progressbar" style="width:0%">
+                      </div>
+                    </div>
+                    
+                    <h3><span id="loadingProgress"></span></h3>
+                </div>
+            
+            </div>
+
+        </div>
+        
+        <!-- Game page -->
+        <div id="game" style="display: none;" class="page page-hidden">
+            <div class="container">
+                <h1 style="margin-top: 0px; text-align: center;"><span id="time"></span></h1>
+                
+                <div class="page-header" style="margin-top: 20px;">
+                    <div class="form-group" id="formGroupSong">
+                        <input class="form-control" type="text" placeholder="Track name" id="songGuess"/>
+                    </div>
+                    <div class="form-group" id="formGroupArtist">
+                        <input class="form-control" type="text" placeholder="Artist name" id="artistGuess"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <a href="#" class="btn btn-success" tabindex="1" onclick="javascript:guess();"><i class="fa fa-question" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Take a guess <i>(enter)</i></a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#" class="btn btn-danger" tabindex="2" onclick="javascript:result();"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Give up on this track</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Ready page -->
+        <div id="ready" style="display: none;" class="page page-hidden">
+            
+            <div class="container">
+                <div class="page-header" style="text-align: center; margin-top: 0px;">
+                    <h1 style="margin-top: 0px;">Here are some rules...</h1>
+                </div>
+            
+                <div class="page-header" style="margin-top: 20px;">
+                    <ul>
+                        <li>It's an endless run : you can listen to as many tracks as you like</li>
+                        <li>The same track can be picked multiple times</li>
+                        <li>You have 30s to find the name and the artist of each track</li>
+                        <li>The name and the artist are both worth 0.5pts</li>
+                        <li>The guesses are case-insensitive</li>
+                        <li>Things such as 'live at', 'remastered', 'interlude', 'bonus', 'remix', 'original mix', 'reprise'... are ignored, as well as words in parentheses</li>
+                        <li>Try to see how many points you can get by listening to your own tracks !</li>
+                    </ul>
+                </div>
+                <a href="#" class="btn btn-success" onclick="javascript:ready();"><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Click here when you're ready to start !</a>
+
+            </div>
+        </div>
+        
+        <!-- Result page -->
+        <div style="display: none;" id="result" class="page page-hidden">
+            <div class="container">
+                <div class="page-header" style="text-align: center; margin-top: 0px;">
+                    <h1 style="margin-top: 0px;"><span id="resultText"></span></h1>
+                    <h3><span id="successRate"></span></h3>
+                </div>
+                <center>
+                    <div class="page-header" style="margin-top: 20px;">
+                        <p class="text-muted">The answer was :</p>
+                        <div class="well well-sm" style="display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center;">
+                            <img id="albumCover" style="width: 64px; height: 64px;" />
+                            <div class="songDetails">
+                                <h3 style="margin-top:0px; margin-bottom: 0px;" id="songName"></h3>
+                                <h4 style="margin-top:0px; margin-bottom: 0px;" class="text-muted" id="artistName"></h4>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </center>
+                <div class="row">
+                    <div class="col-md-10">
+                        <a href="#" class="btn btn-success" onclick="javascript:nextSong();"><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Next track</a>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="#" class="btn btn-danger" onclick="javascript:logout();"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- About modal -->
+        <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="aboutModalLabel">About Spotify Library Blind Test</h4>
+              </div>
+              <div class="modal-body">
+                <p>
+                    Website made by natinusala, using <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> and the <a href="https://bootswatch.com/lumen/" target="_blank">Lumen</a> Bootswatch. Awesome icons provided by <a href="http://fontawesome.io/" target="_blank">FontAwesome</a>.
+                </p>
+                <p>
+                    We talk to Spotify with the <a href="https://github.com/JMPerez/spotify-web-api-js" target="_blank">spotify-web-api-js</a> library. We also use <a href="https://leaverou.github.io/prefixfree/" target="_blank">-prefix-free</a> because, you know, prefixes.
+                </p>
+                <p>
+                    And obviously, all trademarks, including tracks, albums and their covers, are property of their respective owners.
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="width: inherit;"><i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="prefixfree.min.js"></script>
+        <script src="bower_components/spotify-web-api-js/src/spotify-web-api.js"></script>
+        <script src="spotify-blind-test.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </body>
+</html>

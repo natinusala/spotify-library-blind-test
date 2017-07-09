@@ -1,0 +1,99 @@
+.page
+{
+    position: absolute;
+    
+    top: 50%;
+    left:50%;
+    
+    background-color: #f0f0f0;
+    
+    width: 100%;
+    
+    padding: 25px;
+    
+    transition: transform 1s;
+    
+    border: 0px solid #000000;
+}
+
+.songDetails
+{
+    padding-left: 9px;
+    text-align: left;
+}
+
+.page-shown
+{
+    transform: translate(-50%,-50%);
+}
+
+.page-hidden
+{
+    transform: translate(50%,-50%);
+}
+
+
+.page-header
+{
+    border-bottom: 1px solid #595959;
+    width: 100%;
+}
+
+body
+{
+    background-color: #181818;
+    overflow-x: hidden;
+    position: relative;
+}
+
+html
+{
+    overflow-x: hidden;
+}
+
+.progress-bar-success
+{
+    background-color: #1DB954;
+}
+
+#time
+{
+    font-size: 92px;
+}
+
+.btn
+{
+    width: 100%;
+    font-size: 14px !important;
+}
+
+.btn-success,
+.btn-success:visited
+{
+    background-color: #1DB954;
+    border-color: #1aa34a;
+    
+    vertical-align:middle;
+}
+
+.btn-login-text
+{
+    vertical-align: middle;
+}
+
+.btn-success:hover,
+.btn-success:focus
+{
+    width: 100%;
+    background-color: #1CD85E;
+    border-color: #19c154;
+    
+    vertical-align:middle;
+}
+
+.fa-spotify
+{
+    font-size: 24px !important;
+    
+    vertical-align:middle;
+}
