@@ -194,20 +194,24 @@ $(document).ready(function(){
 
 function guess()
 {
-    var guessedSongName = $("#songGuess").val();
-    var songNameToCompareTo = song.track.name;
+    var reduceSongName = function (songName) {
+        if (songNameToCompareTo.lastIndexOf(' - ') != -1)
+            songNameToCompareTo = songNameToCompareTo.substr(0, songNameToCompareTo.lastIndexOf(' - ')-1);
 
-    if (songNameToCompareTo.lastIndexOf('-') != -1)
-        songNameToCompareTo = songNameToCompareTo.substr(0, songNameToCompareTo.lastIndexOf('-')-1);
+        songNameToCompareTo = songNameToCompareTo.replace(/ *\([^)]*\) */g, "").trim();
+    }
 
-    songNameToCompareTo = songNameToCompareTo.replace(/ *\([^)]*\) */g, "").trim();
+    var guessedSongName = reduceSongName($("#songGuess").val());
+    var songNameToCompareTo = reduceSongName(song.track.name);
+
+    console.log(songNameToCompareTo);
 
     var guessedArtistName = $("#artistGuess").val();
 
     var songDisabled = $("#songGuess").prop("disabled");
     var artistDisabled = $("#artistGuess").prop("disabled");
 
-    if (guessedSongName != "" && !songDisabled)
+    if (guessedSongName !== "" && !songDisabled)
     {
         var score = getScore(guessedSongName, songNameToCompareTo);
         if (score >= SCORE_CAP)
@@ -224,7 +228,7 @@ function guess()
         }
     }
 
-    if (guessedArtistName != "" && !artistDisabled)
+    if (guessedArtistName !== "" && !artistDisabled)
     {
         var score = getScore(guessedArtistName, song.track.album.artists[0].name);
         if (score >= SCORE_CAP)
@@ -364,7 +368,10 @@ function startGameForNewSong()
 
     //Pick a random song
     var randIndex = Math.floor(Math.random()*songs.length);
-    song = songs[randIndex];
+    // song = songs[randIndex];
+    console.log(songs);
+
+    song = songs.find(({track}) => track.name.toLowerCase() === "qu'est-ce que tu fous".toLowerCase());
 
     //Play it
     audio = new Audio(song.track.preview_url);
