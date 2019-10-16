@@ -206,8 +206,6 @@ function guess()
     var guessedSongName = reduceSongName($("#songGuess").val());
     var songNameToCompareTo = reduceSongName(song.track.name);
 
-    console.log(songNameToCompareTo);
-
     var guessedArtistName = $("#artistGuess").val();
 
     var songDisabled = $("#songGuess").prop("disabled");
