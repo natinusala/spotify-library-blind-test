@@ -368,10 +368,7 @@ function startGameForNewSong()
 
     //Pick a random song
     var randIndex = Math.floor(Math.random()*songs.length);
-    // song = songs[randIndex];
-    console.log(songs);
-
-    song = songs.find(({track}) => track.name.toLowerCase() === "qu'est-ce que tu fous".toLowerCase());
+    song = songs[randIndex];
 
     //Play it
     audio = new Audio(song.track.preview_url);
