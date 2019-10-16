@@ -195,10 +195,10 @@ $(document).ready(function(){
 function guess()
 {
     var reduceSongName = function (songName) {
-        if (songNameToCompareTo.lastIndexOf(' - ') != -1)
-            songNameToCompareTo = songNameToCompareTo.substr(0, songNameToCompareTo.lastIndexOf(' - ')-1);
+        if (songName.lastIndexOf(' - ') != -1)
+            songName = songName.substr(0, songName.lastIndexOf(' - ')-1);
 
-        songNameToCompareTo = songNameToCompareTo.replace(/ *\([^)]*\) */g, "").trim();
+        songName = songName.replace(/ *\([^)]*\) */g, "").trim();
     }
 
     var guessedSongName = reduceSongName($("#songGuess").val());
