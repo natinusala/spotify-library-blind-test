@@ -15,7 +15,7 @@ for(var i=0; i<self.properties.length; i++) {
 	var property = self.properties[i],
 		camelCased = StyleFix.camelCase(property),
 		PrefixCamelCased = self.prefixProperty(property, true);
-	
+
 	$.cssProps[camelCased] = PrefixCamelCased;
 }
 
@@ -39,7 +39,7 @@ function openLogin()
     var url = getLoginURL([
 					'user-library-read',
 	]);
-	
+
 	var width = 450,
 			height = 730,
 			left = (screen.width / 2) - (width / 2),
@@ -70,18 +70,18 @@ function loadSongs()
 {
     //Get the total
     s.getMySavedTracks({
-            limit: 1, 
+            limit: 1,
             offset: 0,
-        }, 
+        },
         function(error, data)
         {
             total = data.total;
-            
+
             if (limit != -1 && total > limit)
                 total = limit;
-            
+
             setLoadingProgress(0);
-            
+
             //Run the 1st iteration
             loadSongsIteration();
         }
@@ -112,14 +112,14 @@ function getScore(guessed, original)
 {
     guessed = guessed.toLowerCase();
     original = original.toLowerCase();
-    
+
     var score = original.length - getEditDistance(guessed, original);
     return score / original.length * 100;
 }
 
 function getEditDistance(a, b) {
-  if (a.length === 0) return b.length; 
-  if (b.length === 0) return a.length; 
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
 
   var matrix = [];
 
@@ -163,7 +163,7 @@ $(document).ready(function(){
             $("#artistGuess").focus();
         }
     });
-    
+
     $("#artistGuess").keydown(function(event){
         if(event.keyCode == 13)
         {
@@ -175,10 +175,10 @@ $(document).ready(function(){
             $("#songGuess").focus();
         }
     });
-    
+
     jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
         this.each(function() {
-            $(this).css("position","relative"); 
+            $(this).css("position","relative");
             for (var x=1; x<=intShakes; x++) {
             $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
         .animate({left:intDistance}, ((intDuration/intShakes)/2))
@@ -187,7 +187,7 @@ $(document).ready(function(){
       });
     return this;
     };
-    
+
     $("#login").show();
     $("#login").css("transform", "translate(-50%, -50%)");
 });
@@ -196,17 +196,17 @@ function guess()
 {
     var guessedSongName = $("#songGuess").val();
     var songNameToCompareTo = song.track.name;
-    
+
     if (songNameToCompareTo.lastIndexOf('-') != -1)
         songNameToCompareTo = songNameToCompareTo.substr(0, songNameToCompareTo.lastIndexOf('-')-1);
-        
+
     songNameToCompareTo = songNameToCompareTo.replace(/ *\([^)]*\) */g, "").trim();
-    
+
     var guessedArtistName = $("#artistGuess").val();
-    
+
     var songDisabled = $("#songGuess").prop("disabled");
     var artistDisabled = $("#artistGuess").prop("disabled");
-    
+
     if (guessedSongName != "" && !songDisabled)
     {
         var score = getScore(guessedSongName, songNameToCompareTo);
@@ -223,7 +223,7 @@ function guess()
             $("#songGuess").shake(2, 10, 200);
         }
     }
-    
+
     if (guessedArtistName != "" && !artistDisabled)
     {
         var score = getScore(guessedArtistName, song.track.album.artists[0].name);
@@ -240,10 +240,10 @@ function guess()
             $("#artistGuess").shake(2, 10, 200);
         }
     }
-    
+
     songDisabled = $("#songGuess").prop("disabled");
     artistDisabled = $("#artistGuess").prop("disabled");
-    
+
     if (songDisabled && artistDisabled)
     {
         result();
@@ -258,14 +258,14 @@ function logout()
 function createArtistsString(song)
 {
     var string = song.track.artists[0].name + ", ";
-    
+
     for (var i = 1; i < song.track.artists.length-1; i++)
     {
         string += song.track.artists[i].name + ", ";
     }
-    
+
     string = string.substr(0, string.length-2);
-    
+
     return string;
 }
 
@@ -281,12 +281,12 @@ function result()
 
     $("#songName").text(song.track.name);
     $("#artistName").text(createArtistsString(song));
-    
+
     $("#albumCover").attr("src", getCoverForSong(song));
-    
+
     var songDisabled = $("#songGuess").prop("disabled");
     var artistDisabled = $("#artistGuess").prop("disabled");
-    
+
     if (songDisabled && artistDisabled)
     {
         $("#resultText").text("Congratulations ! You found the song and the artist name !");
@@ -306,16 +306,16 @@ function result()
     {
         $("#resultText").text("Oops, you didn't find anything");
     }
-    
+
     totalSongs++;
-    
+
     $("#successRate").text(totalScore + " points earned out of a total of " + totalSongs + " tracks");
-        
+
     $("#result").show();
-    
+
     $("#game").css("transform", "translate(-150%,-50%)");
     $("#result").css("transform", "translate(-50%,-50%)");
-    
+
     setTimeout(function(){
         $("#game").hide();
     }, 1000);
@@ -325,10 +325,10 @@ function nextSong()
 {
     startGameForNewSong();
     $("#game").show();
-    
+
     $("#result").css("transform", "translate(50%,-50%)");
     $("#game").css("transform", "translate(-50%,-50%)");
-    
+
     setTimeout(function(){
         $("#result").hide();
     }, 1000);
@@ -337,12 +337,12 @@ function nextSong()
 function ready()
 {
     startGameForNewSong();
-    
+
     $("#game").show();
-    
+
     $("#ready").css("transform", "translate(-150%,-50%)");
     $("#game").css("transform", "translate(-50%,-50%)");
-    
+
     setTimeout(function(){
         $("#ready").hide();
     }, 1000);
@@ -352,19 +352,20 @@ function startGameForNewSong()
 {
     $("#songGuess").prop("disabled", false);
     $("#artistGuess").prop("disabled", false);
-    
+
     $("#formGroupArtist").removeClass("has-success");
     $("#formGroupSong").removeClass("has-success");
-    
+
     $("#formGroupSong").removeClass("has-error");
     $("#formGroupArtist").removeClass("has-error");
-    
+
     $("#songGuess").val("");
     $("#artistGuess").val("");
-    
+
     //Pick a random song
-    song = songs[Math.floor(Math.random()*songs.length)];
-    
+    var randIndex = Math.floor(Math.random()*songs.length);
+    song = songs[randIndex];
+
     //Play it
     audio = new Audio(song.track.preview_url);
     audio.volume = 0.05;
@@ -374,21 +375,26 @@ function startGameForNewSong()
     {
         $("#time").text(Math.floor(audio.duration) - Math.floor(audio.currentTime));
     }
-    audio.play();
+    audio.play().catch(err => {
+        console.error(err);
+        songs.splice(randIndex, 1); // We remove this element since it cannot be read.
+        startGameForNewSong(); // We rerun the game for a song which works.
+    });
 }
 
 function loadSongsIteration()
 {
      s.getMySavedTracks({
-            limit: 50, 
+            limit: 50,
             offset: loaded,
-        }, 
+        },
         function(error, data)
         {
-            songs = songs.concat(data.items);
+            var filteredData = data.items.filter(({track}) => !!track.preview_url);
+            songs = songs.concat(filteredData);
             loaded += data.items.length;
             setLoadingProgress(loaded);
-            
+
             if (loaded < total)
             {
                 //Continue loading
@@ -398,12 +404,12 @@ function loadSongsIteration()
             {
                 //Start the game
                 songs = shuffle(songs);
-                
+
                 $("#ready").show();
-                
+
                 $("#loading").css("transform", "translate(-150%,-50%)");
                 $("#ready").css("transform", "translate(-50%,-50%)");
-                
+
                 setTimeout(function(){
                     $("#loading").hide();
                 }, 1000);
@@ -417,16 +423,16 @@ window.onmessage = function (e) {
   if (data.type == "access_token")
   {
       s.setAccessToken(data.access_token);
-      
+
       $("#loading").show();
-      
+
       $("#login").css("transform", "translate(-150%,-50%)");
       $("#loading").css("transform", "translate(-50%,-50%)");
-      
+
       setTimeout(function(){
           $("#login").hide();
       }, 1000);
-      
+
       setTimeout(loadSongs, 1000);
   }
 };
