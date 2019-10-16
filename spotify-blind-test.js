@@ -199,6 +199,8 @@ function guess()
             songName = songName.substr(0, songName.lastIndexOf(' - ')-1);
 
         songName = songName.replace(/ *\([^)]*\) */g, "").trim();
+
+        return songName;
     }
 
     var guessedSongName = reduceSongName($("#songGuess").val());
